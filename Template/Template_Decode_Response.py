@@ -6,7 +6,7 @@ class IDecodeResponse(IBaseClass):
     """
     Базовый класс для преобразования из формата requests в формат dict
     """
-    _result = None
+    _result = {}
 
     # def __init__(self , Response: requests.models.Response):
     #     # Теперь расшифровываем что получили
@@ -18,13 +18,10 @@ class IDecodeResponse(IBaseClass):
         :param answer_request:
         :return: dict ответа
         """
-
         # Код ошибки
         self._Parse_result_code(answer_request)
         # Читаем ответ, что нам приходит
         self._Parse_text(answer_request)
-
-        print(self._result)
 
         return self._result
 
@@ -78,7 +75,6 @@ class IDecodeResponse(IBaseClass):
         except Exception as e:
             self._result["info"] = str(e) + "\n Байтовых данных нет>"
             self._result["data"] = None
-
 
     def Result(self) -> dict:
         """

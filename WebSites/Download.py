@@ -29,8 +29,11 @@ class SiteNameMP3UKS(IBaseClass):
 
         # Пункт первый - Ищем нашу ссылку на файл для скачивания
         link_to_file = self._Search_soundtrack(name_soundtrack=name_soundtrack)
-        # Пункт второй - скачиванием файл
-        self.__result = self._Download_file(link_to_file=link_to_file)
+        # Пункт второй - скачиванием файл, если все хорошо
+        if self.__code == 6:
+            self.__File = self._Download_file(link_to_file=link_to_file)
+        else:
+            self.__File = b""
 
     def _Download_file(self, link_to_file):
         """
@@ -38,8 +41,12 @@ class SiteNameMP3UKS(IBaseClass):
         :param link_to_file:
         :return:
         """
-        #
-        return {"File": self.__File, "code": self.__code}
+        from Service.Download.Download_WebSite import WebsiteDownloadMP3UKS
+
+        # Ищем ссылку
+        Link_to_file, self.__code = WebsiteDownloadMP3UKS(link_soundtrack=link_to_file)
+
+        return Link_to_file
 
     def _Search_soundtrack(self, name_soundtrack):
         """
@@ -49,8 +56,18 @@ class SiteNameMP3UKS(IBaseClass):
         """
         from Service.Download.Search_WebSite import WebsiteSearchMP3UKS
 
+        # Ищем ссылку
+        Link_to_file, self.__code = WebsiteSearchMP3UKS(name_soundtrack=name_soundtrack)
 
+        return Link_to_file
 
-        return {"Link": self.__Link_to_file, "code": self.__code}
+    def __call__(self):
 
+        return {"File": self.__File, "code": self.__code}
 
+    def Result(self):
+        """
+        Получаем результат деятельности
+        :return:
+        """
+        return {"File": self.__File, "code": self.__code}

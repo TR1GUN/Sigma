@@ -26,7 +26,7 @@ class Parser:
         """
         self._file_to_parse = BeautifulSoup(text, 'html.parser')
 
-    def Find_element(self, element: str, class_element: str) -> str:
+    def Find_element(self, element: str, class_element: str,filed:str ) -> str:
         """
         Здесь происходит поиск ОДНОГО элемента
         :param element:
@@ -34,7 +34,9 @@ class Parser:
         :return:
         """
 
-        parse_string = self._file_to_parse.find(element, class_=class_element).text
+        parse_string = self._file_to_parse.find(element, class_=class_element)
+
+        fild_string = parse_string.get()
 
         return parse_string
 

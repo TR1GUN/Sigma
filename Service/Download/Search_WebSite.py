@@ -14,10 +14,11 @@ class WebsiteSearchMP3UKS(IBaseClass):
 
     # Линкуем сам файл
     __Link_to_file = ""
-    # Результат работы
-    __result = ""
     # Код состояния
     __code = 6
+
+    # Результат работы
+    __result = {"Link_to_file": __Link_to_file, "code": __code}
 
     def __init__(self, name_soundtrack: str):
         """
@@ -53,7 +54,7 @@ class WebsiteSearchMP3UKS(IBaseClass):
         search_param = self._search_param + name_soundtrack.replace(" ", "+")
         return search_param
 
-    def _search_soundtrack(self, name_soundtrack:str) -> dict:
+    def _search_soundtrack(self, name_soundtrack: str) -> dict:
         """
         Ищем наш саундтрек пол названию.
         Делаем запрос, и разбираем его
@@ -92,7 +93,13 @@ class WebsiteSearchMP3UKS(IBaseClass):
         :return:
         """
         from Adapter.Parser import Parser
-        Link_to_file = Parser(text=response_dict["data"])
+        Text = Parser(text=response_dict["data"])
+
+        # Определяем элементы
+        element = "a"
+        class_element = "track-dl"
+        filed = "href"
+        Link_to_file = Text.Find_element(element=element, class_element=class_element, filed=filed)
         # Если все спарсилось, то кайфуем
 
         if Link_to_file:

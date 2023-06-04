@@ -50,8 +50,6 @@ class POST(ITemplateRequest):
 
         :param url: Url запроса
         :param data: JSON - формат строка
-        :param cookies: Куки - если есть
-        :param headers:  Хеадресс - если есть
         :return:  результат запроса
         """
         # # Получаем функцию, что отвечает за метод
