@@ -143,3 +143,6 @@ class WebsiteDownload(IBaseClass):
 
         # Лезем в рефлексию - не очень хорошо
         return {"File": self.__File, "code": self.__code}
+
+
+

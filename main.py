@@ -164,7 +164,7 @@ url1 = "https://radiopotok.ru/"
 url =  "https://radiopotok.ru/api/radio/tracks?id=1543"
 lol = get(url=url1)
 
-
+print(lol)
 # url_Download = "https://mp3uks.ru"
 #
 # url = "https://mp3uks.ru/index.php?do=search&subaction=search&story=madchild-+lawn+mower+man"
@@ -178,15 +178,15 @@ lol = get(url=url1)
 #
 # url_ = url_Download + "/dl.php?3uo-Wv6kd48ZhrGm98EPjcnJWUTM8LfpRvwMNvc9acYmmUv8E62dRQe-k0sKk4QICIY2IGTTe-4XQ7KptZaavTjPRoXJLNo1CLrQFDaJiuzwRLsESXbSqQ4VzyHqkTkNW3khzs5DUhJnrbTITqpKvxowOUx0z7w4dnL2B994JspJScbwUiIVEM1wBM9joCJ6rLRkRjxq_Qd6T2xlAFtJ9Rg7B1rODU-xc5wqpNu7Lgozxh2KlHw1h7tE_yXf-SuZuV5XPoxPwA6pKX-eCKLsio20nOkBr-7tBC0pCyRPJOOuNvh2Z2O_UwhhqCuZkCz-ug9VB-DXqkvNZQu0w9oBLg==.mp3"
 # lol = get(url=url_)
-print(lol.text)
+# print(lol.text)
+#
+# class Action():
+#     """
+#     Главный класс действий
+#
+#     """
 
-class Action():
-    """
-    Главный класс действий
-    
-    """
-
-
+# {радиостанции:[], ЗА сколько суток собирать: количество ,  только уникальные : True}
 
 # Читаем все радиостанции
 #
@@ -201,3 +201,11 @@ class Action():
 # Выдаем скаченную подборку
 
 
+
+#
+# url_Download = "https://mp3uks.ru"
+#
+# url = "https://mp3uks.ru/index.php?do=search&subaction=search&story=madchild-+lawn+mower+man"
+# data = "do=search&subaction=search&story=madchild-+lawn+mower+man"
+#
+# lol = GET(url=url_Download, params=data)
