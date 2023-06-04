@@ -10,9 +10,12 @@ class SiteNameMP3UKS(IBaseClass):
     -Найти файл
     -Скачать файл
     """
-
+    # Само имя сайта с которого скачиваем
+    WebSite_name = "https://mp3uks.ru/"
     # Файл, что скачали
     __File = b""
+    # Линкуем сам файл
+    __Link_to_file = ""
     # Результат работы
     __result = ""
     # Код состояния
@@ -45,6 +48,6 @@ class SiteNameMP3UKS(IBaseClass):
         :return:
         """
         #
-        return {"File": self.__File, "code": self.__code}
+        return {"File": self.__Link_to_file, "code": self.__code}
 
 
