@@ -3,6 +3,16 @@ from bs4 import BeautifulSoup
 
 
 class Parser:
+    """
+    Класс парсера
+
+    сделал на основе BeautifulSoup
+
+    Имеет функционал:
+
+    - Поиск Первого элемента
+    - Поиск всех элементов
+    """
     _file_to_parse = None
 
     def __init__(self, text):

@@ -47,7 +47,10 @@ class SiteNameMP3UKS(IBaseClass):
         :param name_soundtrack:
         :return:
         """
-        #
-        return {"File": self.__Link_to_file, "code": self.__code}
+        from Service.Download.Search_WebSite import WebsiteSearchMP3UKS
+
+
+
+        return {"Link": self.__Link_to_file, "code": self.__code}
 
 

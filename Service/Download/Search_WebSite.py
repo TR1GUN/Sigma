@@ -26,6 +26,22 @@ class WebsiteSearchMP3UKS(IBaseClass):
         :param name_soundtrack: Название саундтрека
         """
 
+        # Делаем запрос все дела
+        response_dict = self._search_soundtrack(name_soundtrack=name_soundtrack)
+
+        # Теперь смотрим чо мы взяли
+        if response_dict.get("code") == 200:
+            # Ищем ссылку на скачивание
+            self._parse_result(response_dict)
+
+        # Иначе - логируем ошибку
+        else:
+            eror_log = "Ошибка запроса  - Информация о запросе: " + str(response_dict)
+            # Ставим ее статус
+            self.__code = 2
+            self._LOG(Text=eror_log, Type_error=self.__code)
+            self.__Link_to_file = None
+
     # Формируем правильное название
     def _forming_correct_name_for_request(self, name_soundtrack: str) -> str:
         """
@@ -37,36 +53,59 @@ class WebsiteSearchMP3UKS(IBaseClass):
         search_param = self._search_param + name_soundtrack.replace(" ", "+")
         return search_param
 
-    def _search_soundtrack(self, search_param):
+    def _search_soundtrack(self, name_soundtrack:str) -> dict:
         """
-        Ищем наш саундтрек пол названию
-        :param name_soundtrack: - Название саундтрека
+        Ищем наш саундтрек пол названию.
+        Делаем запрос, и разбираем его
+        :param name_soundtrack:
         :return:
         """
-        # Формируем наш запрос -
-        from Request.Request_GET import GET
-
         # Необходимые данные для этого:
 
         # Сайт и его URL
         url = self.WebSite_name
         # параметры запроса
-        params = search_param
+        params = self._forming_correct_name_for_request(name_soundtrack)
         # Хедер
         headers = None
         # Куки
         cookies = None
 
+        # Формируем наш запрос -
+        from Request.Request_GET import GET
+
         # Делаем запрос - получаем ответ
-        _Search_soundtrack_Response_RequestGET = GET(url=url, params=params,headers=headers, cookies=cookies).Response()
+        _Search_soundtrack_Response_RequestGET = GET(url=url, params=params, headers=headers,
+                                                     cookies=cookies).Response()
 
         # Парсим в нужный вид
         from Adapter.Decode_Response import DecodeResponse
 
         response_dict = DecodeResponse(Response=_Search_soundtrack_Response_RequestGET).Result()
 
-        # Теперь смотрим чо мы взяли
-        if response_dict.get("code") == 200 :
-            # Ищем ссылку на скачивание
+        return response_dict
 
-            self.__Link_to_file =
+    def _parse_result(self, response_dict):
+        """
+        Здесь парсим наш файл в поисках ссылки
+        :param response_dict:
+        :return:
+        """
+        from Adapter.Parser import Parser
+        Link_to_file = Parser(text=response_dict["data"])
+        # Если все спарсилось, то кайфуем
+
+        if Link_to_file:
+            self.__Link_to_file = Link_to_file
+            self.__code = 6
+            # Иначе - логируем
+        else:
+            eror_log = "Ошибка парсинга данных  - Информация о запросе: " + str(response_dict)
+            # Ставим ее статус
+            self.__code = 2
+            self._LOG(Text=eror_log, Type_error=self.__code)
+            self.__Link_to_file = None
+
+    # # Попробуем рефлексию
+    # def __call__(self):
+    #     return [self.__code, self.__Link_to_file]
