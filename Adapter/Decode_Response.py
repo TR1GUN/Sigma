@@ -8,6 +8,6 @@ class DecodeResponse(IDecodeResponse):
     """
     _result = None
 
-    def __init__(self , Response: requests.models.Response):
+    def __init__(self, Response: requests.models.Response):
         # Теперь расшифровываем что получили
         self._result = self._parse_answer(Response)
