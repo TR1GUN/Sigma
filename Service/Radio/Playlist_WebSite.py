@@ -2,38 +2,39 @@ from Template.Template_BaseClass import IBaseClass
 
 
 # Хорошо бы создать класс шаблон - WebsiteSearch
-class WebsiteSearchMP3UKS(IBaseClass):
+class WebsitePlaylistRadioPotok(IBaseClass):
     """
-    Класс для работы c поиском нужного трека на сайте https://mp3uks.ru/
+    Класс для работы c поиском нужного плейлиста на сайте https://radiopotok.ru/
     """
 
     # Само имя сайта с которого скачиваем
-    WebSite_name = "https://mp3uks.ru/"
+    WebSite_name = "https://radiopotok.ru/api/radio/"
     # Параметр поиска
-    _search_param = "index.php?do=search&subaction=search&story="
+    _search_param = "tracks?id="
 
-    # Линкуем сам файл
-    __Link_to_file = ""
+    # Плейлист
+    __Playlist = []
     # Код состояния
     __code = 6
 
     # Результат работы
-    __result = {"Link_to_file": __Link_to_file, "code": __code}
+    __result = {"Playlist": __Playlist, "code": __code}
 
-    def __init__(self, name_soundtrack: str):
+    def __init__(self, ID_radio: str):
         """
         Что принимаем:
 
-        :param name_soundtrack: Название саундтрека
+        :param ID_radio: Название радиостанции
         """
 
         # Делаем запрос все дела
-        response_dict = self._search_soundtrack(name_soundtrack=name_soundtrack)
+        response_dict = self._search_playlist(ID_radio=ID_radio)
 
         # Теперь смотрим чо мы взяли
         if response_dict.get("code") == 200:
             # Ищем ссылку на скачивание
             self._parse_result(response_dict)
+            self.__code = 6
 
         # Иначе - логируем ошибку
         else:
@@ -44,21 +45,21 @@ class WebsiteSearchMP3UKS(IBaseClass):
             self.__Link_to_file = None
 
     # Формируем правильное название
-    def _forming_correct_name_for_request(self, name_soundtrack: str) -> str:
+    def _forming_correct_name_for_request(self, ID_radio: str) -> str:
         """
-        Формируем правильное название трека в форме, которая кушает запрос.
-        :param name_soundtrack: Само название, в форме которую может читать человек
+        Формируем правильное название в форме, которая кушает запрос.
+        :param ID_radio: ID радио
         :return: название для параметра запроса
         """
         # Формируем наш параметр поиска
-        search_param = self._search_param + name_soundtrack.replace(" ", "+")
+        search_param = self._search_param + str(ID_radio)
         return search_param
 
-    def _search_soundtrack(self, name_soundtrack: str) -> dict:
+    def _search_playlist(self, ID_radio: str) -> dict:
         """
-        Ищем наш саундтрек пол названию.
+        Ищем наш плейлист по радио.
         Делаем запрос, и разбираем его
-        :param name_soundtrack:
+        :param ID_radio:
         :return:
         """
         # Необходимые данные для этого:
@@ -66,7 +67,7 @@ class WebsiteSearchMP3UKS(IBaseClass):
         # Сайт и его URL
         url = self.WebSite_name
         # параметры запроса
-        params = self._forming_correct_name_for_request(name_soundtrack)
+        params = self._forming_correct_name_for_request(ID_radio)
         # Хедер
         headers = None
         # Куки
@@ -88,7 +89,7 @@ class WebsiteSearchMP3UKS(IBaseClass):
 
     def _parse_result(self, response_dict):
         """
-        Здесь парсим наш файл в поисках ссылки
+        Здесь парсим наш файл в поисках всего плейлиста
         :param response_dict:
         :return:
         """
@@ -96,14 +97,14 @@ class WebsiteSearchMP3UKS(IBaseClass):
         Text = Parser(text=response_dict["data"])
 
         # Определяем элементы
-        element = "a"
-        class_element = "track-dl"
-        filed = "href"
-        Link_to_file = Text.Find_element(element=element, class_element=class_element, filed=filed)
+        element = "td"
+        class_element = "font-medium w-full leading-tight js--radio-playlist-track"
+        # filed = "href"
+        Playlist_list = Text.Find_all_elements(element=element, class_element=class_element)
         # Если все спарсилось, то кайфуем
 
-        if Link_to_file:
-            self.__Link_to_file = Link_to_file
+        if Playlist_list:
+            self.__Playlist = Playlist_list
             self.__code = 6
             # Иначе - логируем
         else:
@@ -111,12 +112,11 @@ class WebsiteSearchMP3UKS(IBaseClass):
             # Ставим ее статус
             self.__code = 2
             self._LOG(Text=eror_log, Type_error=self.__code)
-            self.__Link_to_file = None
+            self.__Playlist = []
 
     # Попробуем рефлексию
     def __call__(self):
-        return self.__Link_to_file, self.__code
-
+        return self.__Playlist, self.__code
 
     # def Result(self):
-    #     return self.__Link_to_file, self.__code
+    #     return self.__Playlist, self.__code

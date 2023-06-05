@@ -16,7 +16,7 @@ class WebsiteDownloadMP3UKS(IBaseClass):
     __code = 6
 
     # Результат работы
-    __result = {"Link_to_file": __File, "code": __code}
+    __result = {"File": __File, "code": __code}
 
     def __init__(self, link_soundtrack: str):
         """
@@ -29,11 +29,10 @@ class WebsiteDownloadMP3UKS(IBaseClass):
         response_dict = self._Download_mp3_file(link_soundtrack=link_soundtrack)
         # Теперь смотрим чо мы взяли
 
-        print(response_dict)
-
         if response_dict.get("code") == 200:
             # Ищем ссылку на скачивание
-            print(response_dict)
+            self.__File = response_dict.get("data")
+            self.__code = 6
 
         # Иначе - логируем ошибку
         else:
@@ -41,7 +40,7 @@ class WebsiteDownloadMP3UKS(IBaseClass):
             # Ставим ее статус
             self.__code = 2
             self._LOG(Text=eror_log, Type_error=self.__code)
-            self.__Link_to_file = None
+            self.__File = b""
 
     def _forming_correct_link_to_download_for_request(self, link: str) -> str:
         """
@@ -84,18 +83,8 @@ class WebsiteDownloadMP3UKS(IBaseClass):
 
         return response_dict
 
-    def _Read_Binary_file(self, answer_to_site):
-        """
-        В этом методе
-        :param answer_to_site:
-        :return:
-        """
+    def __call__(self):
+        return self.__File, self.__code
 
-    # def __call__(self):
-    #
-    #     # Лезем в рефлексию - не очень хорошо
-    #     return {"File": self.__File, "code": self.__code}
-
-
-link_soundtrack = "/dl.php?3uo-Wv6kd48ZhrGm98EPjcnJWUTM8LfpRvwMNvc9acYmmUv8E62dRQe-lXkwh7UbZ7IBHmTMeKYcPZ6Qm9SGvCzOdqnnL8U1PsrWcRCHjNLwaKMUa2nc82NXyEaVqj4bDmIikux9VBBz_bbYUYxLyH1VAl50i5dcCUL3F9sWIMhnY_erRQ8NZ_MOAZJvvyYcw5hIRSx45l0VW153ADF65GM7DnDdTmCuTogzp_67K2ww-DP-rjIs3oFA91ekgBiNi0pIPedF9WquKUnmV-r6pq-Ah58_r-7tBC0pCyRPJOOuNvh2Z2O_UwhhqCuZkCz-ug9VB-DXqkvNZQu0w9oBLg==.mp3"
-WebsiteDownloadMP3UKS(link_soundtrack=link_soundtrack)
+    # def Result(self):
+    #     return self.__File, self.__code

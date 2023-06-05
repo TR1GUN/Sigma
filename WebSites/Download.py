@@ -2,7 +2,7 @@
 from Template.Template_BaseClass import IBaseClass
 
 
-class SiteNameMP3UKS(IBaseClass):
+class DownloadSiteNameMP3UKS(IBaseClass):
     """
     В Этом классе работаем с сайтом https://mp3uks.ru/
 
@@ -65,9 +65,9 @@ class SiteNameMP3UKS(IBaseClass):
 
         return {"File": self.__File, "code": self.__code}
 
-    def Result(self):
-        """
-        Получаем результат деятельности
-        :return:
-        """
-        return {"File": self.__File, "code": self.__code}
+    # def Result(self):
+    #     """
+    #     Получаем результат деятельности
+    #     :return:
+    #     """
+    #     return {"File": self.__File, "code": self.__code}
