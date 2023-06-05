@@ -33,13 +33,10 @@ class PlaylistSiteNameRadioPotok(IBaseClass):
         # Пункт первый - Ищем нашу ссылку на файл для скачивания
         self.__Playlist_list = self._Search_Playlist(ID_radio=ID_radio)
 
-
-
-
     def _Search_Playlist(self, ID_radio):
         """
         В этом методе выполняем: Поиск нужного плейлиста
-        :param name_soundtrack:
+        :param ID_radio:
         :return:
         """
         from Service.Radio.Playlist_WebSite import WebsitePlaylistRadioPotok
@@ -50,12 +47,11 @@ class PlaylistSiteNameRadioPotok(IBaseClass):
         return Playlist_list
 
     def __call__(self):
-
-        return {"Playlist": self.__Playlist_list, "code": self.__code}
+        return self.__Playlist_list, self.__code
 
     # def Result(self):
     #     """
     #     Получаем результат деятельности
     #     :return:
     #     """
-    #     return {"File": self.__Playlist_list, "code": self.__code}
+    #     return {"Playlist": self.__Playlist_list, "code": self.__code}

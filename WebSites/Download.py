@@ -61,9 +61,10 @@ class DownloadSiteNameMP3UKS(IBaseClass):
 
         return Link_to_file
 
+    # Плохо, но почему бы и нет
     def __call__(self):
 
-        return {"File": self.__File, "code": self.__code}
+        return self.__File, self.__code
 
     # def Result(self):
     #     """
